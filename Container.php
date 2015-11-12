@@ -47,9 +47,9 @@ class Container implements ArrayAccess
         if (isset($this->providers[$name])) {
             return $this->isClosure($name) ?
             call_user_func_array($this->providers[$name], $params) : $this->providers[$name];
-        } else {
-            return "Provider <b>" . $name . "</b> doesn't exist !";
         }
+
+        return "Provider <b>" . $name . "</b> doesn't exist !";
     }
 
     // 2. Implement accessing and changing providers as property
@@ -60,7 +60,7 @@ class Container implements ArrayAccess
 
     public function __get($name)
     {
-        return $this->getProvider($name);
+        return $this->get($name);
     }
 
     // 3. Implement accessing and changing providers as array
@@ -82,7 +82,7 @@ class Container implements ArrayAccess
 
     public function offsetGet($name)
     {
-        return $this->getProvider($name);
+        return $this->get($name);
     }
 
     // 4. Implement accessing providers as function
@@ -107,21 +107,6 @@ class Container implements ArrayAccess
     private function isClosure($name)
     {
         return ($this->providers[$name] instanceof Closure) ? true : false;
-    }
-
-    /**
-     * Get provider without parameters.
-     *
-     * @param  string  $name [provider name]
-     * @return return_value_of_the_callback|string
-     */
-    private function getProvider($name)
-    {
-        if (isset($this->providers[$name])) {
-            return $this->isClosure($name) ? call_user_func($this->providers[$name]) : $this->providers[$name];
-        } else {
-            return "Provider <b>" . $name . "</b> doesn't exist !";
-        }
     }
 
     // 6. Implement provider interface
