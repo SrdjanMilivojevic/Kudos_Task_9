@@ -45,7 +45,7 @@ class Container implements ArrayAccess
     public function get($name, $params = [])
     {
         if (isset($this->providers[$name])) {
-            return $this->isClosure($name) ?
+            return ($this->providers[$name] instanceof Closure) ?
             call_user_func_array($this->providers[$name], $params) : $this->providers[$name];
         }
 
@@ -96,17 +96,6 @@ class Container implements ArrayAccess
     public function __call($name, $params = [])
     {
         return $this->get($name, $params);
-    }
-
-    /**
-     * Check if provider is a closure.
-     *
-     * @param  string  $name [provider name]
-     * @return boolean
-     */
-    private function isClosure($name)
-    {
-        return ($this->providers[$name] instanceof Closure) ? true : false;
     }
 
     // 6. Implement provider interface
