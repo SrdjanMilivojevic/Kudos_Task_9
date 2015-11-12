@@ -55,7 +55,7 @@ class Container implements ArrayAccess
     // 2. Implement accessing and changing providers as property
     public function __set($name, $provider)
     {
-        $this->providers[$name] = $provider;
+        $this->set($name, $provider);
     }
 
     public function __get($name)
@@ -65,9 +65,9 @@ class Container implements ArrayAccess
 
     // 3. Implement accessing and changing providers as array
     // Interface ArrayAccess methods.
-    public function offsetSet($name, $value)
+    public function offsetSet($name, $provider)
     {
-        is_null($name) ? $this->providers[] = $value : $this->providers[$name] = $value;
+        $this->set($name, $provider);
     }
 
     public function offsetExists($name)
@@ -87,7 +87,7 @@ class Container implements ArrayAccess
 
     // 4. Implement accessing providers as function
     /**
-     * Accessing providers as function
+     * Accessing providers as function.
      *
      * @param  string $name   [provider name]
      * @param  array  $params
